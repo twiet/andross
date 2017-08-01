@@ -10,10 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170730235129) do
+ActiveRecord::Schema.define(version: 20170801015236) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "tournaments", force: :cascade do |t|
+    t.integer "creator_id", null: false
+    t.string "tournament_name", null: false
+    t.string "location"
+    t.datetime "date_start", null: false
+    t.datetime "date_end", null: false
+    t.datetime "registration_start"
+    t.datetime "registration_end"
+    t.datetime "registration_length"
+    t.boolean "is_published?", null: false
+    t.boolean "is_finished?", null: false
+    t.boolean "has_started?", null: false
+    t.integer "champion_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["creator_id"], name: "index_tournaments_on_creator_id"
+    t.index ["date_start"], name: "index_tournaments_on_date_start"
+    t.index ["location"], name: "index_tournaments_on_location"
+    t.index ["tournament_name"], name: "index_tournaments_on_tournament_name"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
