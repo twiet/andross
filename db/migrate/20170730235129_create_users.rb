@@ -15,6 +15,6 @@ class CreateUsers < ActiveRecord::Migration[5.1]
     add_index :users, :session_token, unique: true
     add_index :users, :email, unique: true
     add_index :users, :tag
-    
+
   end
 end
