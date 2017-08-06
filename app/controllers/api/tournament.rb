@@ -82,11 +82,10 @@ class Tournament
     return helper(matches.last, 0)
   end
 
-  def to_h
-    {
-      :matches => matches,
-      :players => players
-    }
+  def to_json(*opt)
+    match_by_level = {}
+    (1..height).each { |lvl| match_by_level[lvl] = find_all_matches_by_level(lvl).map(&:to_json) }
+    return match_by_level.to_json
   end
 
   private :construct_index, :construct_matches
@@ -102,6 +101,7 @@ class Player
   def to_s
     return "#{name}"
   end
+
 end
 
 class Match
@@ -149,14 +149,14 @@ class Match
     end
   end
 
-  def to_h
+  def to_json(*opt)
     {
-      :next_match => next_match,
-      :p1 => p1,
-      :p2 => p2,
-      :m1 => m1,
-      :m2 => m2
-    }
+      :next_match => next_match.to_s,
+      :m1 => m1.to_s,
+      :m2 => m2.to_s,
+      :p1 => p1.to_s,
+      :p2 => p2.to_s
+    }.to_json
   end
 
   def to_s
