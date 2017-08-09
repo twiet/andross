@@ -163,3 +163,14 @@ class Match
     "#{p1.nil? ? -1 : p1} vs #{p2.nil? ? -1 : p2}"
   end
 end
+
+def generate_future_matches(matches)
+  return matches if matches.length <= 1
+  new_matches = []
+  idx = 0
+  while idx < matches.length/2
+    new_matches << (matches[idx].to_s + matches[matches.length - idx - 1].to_s)
+    idx += 1
+  end
+  return matches += generate_future_matches(new_matches)
+end

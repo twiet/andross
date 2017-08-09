@@ -15,12 +15,29 @@
 
 class User < ApplicationRecord
 
+  attr_reader :password
+
   validates :email, :tag, :is_guest?, :password_digest, :session_token, presence: true
   validates :email, uniqueness: true
   validates :password, length: {minimum: 6, allow_nil: true}
 
   after_initialize :ensure_session_token
-  attr_reader :password
+
+  has_many :created_tournaments,
+  class_name: :Tournament,
+  foreign_key: :author_id,
+  primary_key: :id
+
+  has_many :matches,
+  class_name: :Match,
+  primary_key: :id,
+  foreign_key: :match_id
+
+  has_many :tournaments,
+  class_name: :Tournament,
+  primary_key: :id,
+  foreign_key: :player_id
+
 
   def self.find_by_credentials(email, password)
     user = User.find_by(email: email)
