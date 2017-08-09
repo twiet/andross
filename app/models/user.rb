@@ -25,18 +25,19 @@ class User < ApplicationRecord
 
   has_many :created_tournaments,
   class_name: :Tournament,
-  foreign_key: :author_id,
+  foreign_key: :creator_id,
   primary_key: :id
 
-  has_many :matches,
-  class_name: :Match,
-  primary_key: :id,
-  foreign_key: :match_id
+  has_many :matches
 
-  has_many :tournaments,
-  class_name: :Tournament,
+  has_many :participations,
+  class_name: :Participation,
   primary_key: :id,
   foreign_key: :player_id
+
+  has_many :participated_tournaments,
+  through: :participations,
+  source: :tournament
 
 
   def self.find_by_credentials(email, password)

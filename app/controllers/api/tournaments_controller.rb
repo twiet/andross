@@ -22,7 +22,7 @@ class Api::TournamentsController < ApplicationController
     # 4. TODO: Discuss: add array column for matches and players? Or rely on active record?
 
     @tournament = Tournament.new(tournament_params)
-    @tournament.fill
+    @tournament.insert_byes
     @tournament.generate_matches(@tournament.players)
 
   end

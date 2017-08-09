@@ -1,21 +1,38 @@
+# == Schema Information
+#
+# Table name: matches
+#
+#  id              :integer          not null, primary key
+#  player1_id      :integer
+#  player2_id      :integer
+#  next_match_id   :integer
+#  station_number  :integer
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  winner_id       :integer
+#  child_match1_id :integer
+#  child_match2_id :integer
+#
+
 class Match < ApplicationRecord
 
   belongs_to :tournament
 
-  has_one :player1,
+  belongs_to :player1,
   class_name: :User,
   foreign_key: :player1_id,
   primary_key: :id
 
-  has_one :player2,
+  belongs_to :player2,
   class_name: :User,
   foreign_key: :player2_id,
   primary_key: :id
 
   def cannot_play_self
-  if self.player_1_id == self.player_2_id
-    errors[:player1_id] << "same players in match!"
-    errors[:player2_id] << "same players in match!"
+    if self.player_1_id == self.player_2_id
+      errors[:player1_id] << "same players in match!"
+      errors[:player2_id] << "same players in match!"
+    end
   end
 
   def advance(winner)
@@ -35,6 +52,4 @@ class Match < ApplicationRecord
     end
 
   end
-end
-
 end
