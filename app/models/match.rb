@@ -18,18 +18,18 @@ class Match < ApplicationRecord
 
   belongs_to :tournament
 
-  belongs_to :player1,
+  belongs_to :player1, optional: true,
   class_name: :User,
   foreign_key: :player1_id,
   primary_key: :id
 
-  belongs_to :player2,
+  belongs_to :player2, optional: true,
   class_name: :User,
   foreign_key: :player2_id,
   primary_key: :id
 
   def cannot_play_self
-    if self.player_1_id == self.player_2_id
+    if self.player1_id == self.player2_id
       errors[:player1_id] << "same players in match!"
       errors[:player2_id] << "same players in match!"
     end

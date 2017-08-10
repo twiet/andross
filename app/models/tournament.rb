@@ -20,7 +20,7 @@
 #
 
 # Tournament.new(creator_id: 1, tournament_name: "KevinSucks", date_start: date, date_end: date2, is_published?: false, is_finished?: false, is_started?: false)
-
+require 'byebug'
 class Tournament < ApplicationRecord
 
   validates :creator_id, :tournament_name, :date_start, :date_end, :is_published?, :is_finished?, :has_started?, presence: true
@@ -59,26 +59,29 @@ class Tournament < ApplicationRecord
     length = self.players.length
     until length.is_power_of_two?
       self.players << User.new(
-      tag: "_BYE_"
+        tag: "_BYE_"
       )
     end
   end
 
-  def generate_matches(players)
-    matches = []
+  def generate_matches
     idx = 0
+    players = self.players
     while idx < players.length / 2
       player1 = players[idx]
       player2 = players[players.length - 1 - idx]
-      matches << Match.new(
-        player_1_id: player1.id,
-        player_2_id: player2.id,
-        station_number: idx + 1
+      new_match = Match.new(
+        player1_id: player1.id,
+        player2_id: player2.id,
+        station_number: idx + 1,
+        tournament_id: self.id
         )
+      new_match.save!
+      self.matches << new_match
       idx += 1
     end
 
-    generate_future_matches(matches)
+    self.matches = generate_future_matches(self.matches)
   end
 
   def generate_future_matches(matches)
@@ -89,11 +92,18 @@ class Tournament < ApplicationRecord
     while idx < matches.length / 2
       match1 = matches[idx]
       match2 = matches[matches.length - 1 - idx]
-      new_match = Match.new()
-      match1.next_match = new_match
-      match2.next_match = new_match
-      new_match.child_match1_id = match1.id
-      new_match.child_match2_id = match2.id
+
+      new_match = Match.new(tournament_id: self.id)
+      new_match.save!
+
+      match1.update_attributes(next_match_id: new_match.id)
+      match2.update_attributes(next_match_id: new_match.id)
+
+      new_match.update_attributes({
+          child_match1_id: match1.id,
+          child_match2_id: match2.id
+        })
+
       new_matches << new_match
       idx +=1
     end
