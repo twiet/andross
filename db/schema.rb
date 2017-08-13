@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170810034820) do
+ActiveRecord::Schema.define(version: 20170813214306) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,9 @@ ActiveRecord::Schema.define(version: 20170810034820) do
     t.integer "child_match1_id"
     t.integer "child_match2_id"
     t.integer "tournament_id"
+    t.integer "player1_score"
+    t.integer "player2_score"
+    t.integer "max_score"
   end
 
   create_table "participations", force: :cascade do |t|

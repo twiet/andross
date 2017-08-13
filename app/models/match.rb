@@ -12,8 +12,12 @@
 #  winner_id       :integer
 #  child_match1_id :integer
 #  child_match2_id :integer
+#  tournament_id   :integer
+#  player1_score   :integer
+#  player2_score   :integer
+#  max_score       :integer
 #
-
+require 'byebug'
 class Match < ApplicationRecord
 
   belongs_to :tournament
@@ -35,23 +39,43 @@ class Match < ApplicationRecord
     end
   end
 
-  def advance(winner)
-    #find next match and set one of the player_ids as the winner's
-    if player1.id.nil?
-      self.winner = player_2
-    elsif player2.id.nil?
-      self.winner = player1
-    else
-      self.winner = winner
+  def update_player_score(player_id, newScore)
+    if player_id == self.player1_id && newScore <= self.max_score
+      self.player1_score = newScore
+      self.save!
+      advance(player1_id) if self.player1_score == self.max_score
+    elsif player_id == player2_id && newScore <= self.max_score
+      self.player2_score = newScore
+      self.save!
+      advance(player2_id) if self.player2_score == self.max_score
+    end
+  end
+
+  def handle_bye
+    if player1_id.nil? && player2_id.nil?
+      return
+    elsif player1_id.nil?
+      winner_id = player2_id
+    elsif player2_id.nil?
+      winner_id = player1_id
     end
 
-    next_match = self.next_match
+    advance(winner_id) unless winner_id.nil?
+  end
 
-    if self.next_match.player1_id.nil?
-      self.next_match.player1_id = self.winner.id
+  def advance(winner_id)
+    byebug
+    self.winner_id = winner_id
+    self.save!
+
+    next_match = Match.find_by(id: self.next_match_id)
+
+    if next_match.player1_id.nil?
+      next_match.player1_id = self.winner_id
     else
-      self.next_match.player2.id = self.winner.id
+      next_match.player2.id = self.winner_id
     end
+    next_match.save!
 
   end
 end

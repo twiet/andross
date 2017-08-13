@@ -20,7 +20,6 @@
 #
 
 # Tournament.new(creator_id: 1, tournament_name: "KevinSucks", date_start: date, date_end: date2, is_published?: false, is_finished?: false, is_started?: false)
-require 'byebug'
 class Tournament < ApplicationRecord
 
   validates :creator_id, :tournament_name, :date_start, :date_end, :is_published?, :is_finished?, :has_started?, presence: true
@@ -117,5 +116,14 @@ class Tournament < ApplicationRecord
     return matches += generate_future_matches(new_matches)
   end
 
+  def initialize_matches(max_score)
+    self.matches.each do |match|
+      match.max_score = max_score
+      match.player1_score = 0
+      match.player2_score = 0
+      match.save!
+      match.handle_bye
+    end
+  end
 
 end

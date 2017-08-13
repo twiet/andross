@@ -12,6 +12,10 @@
 #  winner_id       :integer
 #  child_match1_id :integer
 #  child_match2_id :integer
+#  tournament_id   :integer
+#  player1_score   :integer
+#  player2_score   :integer
+#  max_score       :integer
 #
 
 require 'rails_helper'
