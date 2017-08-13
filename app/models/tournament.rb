@@ -37,16 +37,6 @@ class Tournament < ApplicationRecord
   foreign_key: :creator_id,
   class_name: :User
 
-  #TO DISCUSS:
-  # Flow 1:
-  # Start with blank players array when tournament is created. TO makes post requests to add players to the array
-
-  # Flow 2:
-  # TO maintains player list on frontend (implement local storage in case he exits by accident) while registering.
-  # Tournament is only created with complete player list.
-
-  #Flows converge:
-
   def is_power_of_two?(num)
     while (num % 2 == 0 and num != 0)
       num /= 2
