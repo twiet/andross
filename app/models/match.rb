@@ -17,7 +17,7 @@
 #  player2_score   :integer
 #  max_score       :integer
 #
-require 'byebug'
+
 class Match < ApplicationRecord
 
   belongs_to :tournament
