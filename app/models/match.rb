@@ -37,13 +37,15 @@ class Match < ApplicationRecord
 
   def advance(winner)
     #find next match and set one of the player_ids as the winner's
-    if player1.tag == "_BYE_"
+    if player1.id.nil?
       self.winner = player_2
-    elsif player2.tag == "_BYE_"
+    elsif player2.id.nil?
       self.winner = player1
     else
       self.winner = winner
     end
+
+    next_match = self.next_match
 
     if self.next_match.player1_id.nil?
       self.next_match.player1_id = self.winner.id

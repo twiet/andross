@@ -55,24 +55,30 @@ class Tournament < ApplicationRecord
     num == 1
   end
 
-  def insert_byes
-    length = self.players.length
-    until length.is_power_of_two?
-      self.players << User.new(
-        tag: "_BYE_"
-      )
+  def num_byes(num_players)
+    num_players_with_byes = self.players.length
+    until is_power_of_two?(num_players_with_byes)
+      num_players_with_byes += 1
     end
+    num_players_with_byes - num_players
   end
 
   def generate_matches
     idx = 0
-    players = self.players
-    while idx < players.length / 2
+    num_players = self.players.length
+    num_byes = num_byes(num_players)
+    num_players_with_byes = num_players + num_byes
+    while idx < num_players_with_byes / 2
       player1 = players[idx]
-      player2 = players[players.length - 1 - idx]
+      unless idx < num_byes
+        player2 = players[num_players_with_byes - 1 - idx]
+        player2_id = player2.id
+      else
+        player2_id = nil
+      end
       new_match = Match.new(
         player1_id: player1.id,
-        player2_id: player2.id,
+        player2_id: player2_id,
         station_number: idx + 1,
         tournament_id: self.id
         )
