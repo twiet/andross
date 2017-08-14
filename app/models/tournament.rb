@@ -17,9 +17,9 @@
 #  champion_id         :integer
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  max_score_per_round :integer
 #
 
-# Tournament.new(creator_id: 1, tournament_name: "KevinSucks", date_start: date, date_end: date2, is_published?: false, is_finished?: false, is_started?: false)
 class Tournament < ApplicationRecord
 
   validates :creator_id, :tournament_name, :date_start, :date_end, :is_published?, :is_finished?, :has_started?, presence: true
@@ -106,9 +106,9 @@ class Tournament < ApplicationRecord
     return matches += generate_future_matches(new_matches)
   end
 
-  def initialize_matches(max_score)
+  def start_tournament
     self.matches.each do |match|
-      match.max_score = max_score
+      match.max_score = self.max_score_per_round
       match.player1_score = 0
       match.player2_score = 0
       match.save!

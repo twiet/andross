@@ -64,18 +64,15 @@ class Match < ApplicationRecord
   end
 
   def advance(winner_id)
-    byebug
     self.winner_id = winner_id
     self.save!
 
     next_match = Match.find_by(id: self.next_match_id)
 
     if next_match.player1_id.nil?
-      next_match.player1_id = self.winner_id
+      next_match.update_columns(player1_id: winner_id)
     else
-      next_match.player2.id = self.winner_id
+      next_match.update_columns(player2_id: winner_id)
     end
-    next_match.save!
-
   end
 end

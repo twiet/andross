@@ -17,6 +17,7 @@
 #  champion_id         :integer
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  max_score_per_round :integer
 #
 
 require 'rails_helper'

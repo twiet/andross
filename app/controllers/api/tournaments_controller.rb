@@ -19,19 +19,19 @@ class Api::TournamentsController < ApplicationController
   end
 
   def update
-		@tournament = Tournament.find(params[:id])
-		if @tournament.update_attributes(tournament_params)
-			render "api/tournaments/show"
-		else
-			render json: @tournament.errors.full_messages, status: 422
-		end
-	end
+    @tournament = Tournament.find(params[:id])
+    if @tournament.update_attributes(tournament_params)
+      render "api/tournaments/show"
+    else
+      render json: @tournament.errors.full_messages, status: 422
+    end
+  end
 
-	def destroy
-		@user = User.find(params[:id])
-		@user.destroy
-		render "api/users/index", status: 200;
-	end
+  def destroy
+    @user = User.find(params[:id])
+    @user.destroy
+    render "api/users/index", status: 200;
+  end
 
   private
 
