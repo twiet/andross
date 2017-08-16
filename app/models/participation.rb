@@ -7,6 +7,7 @@
 #  tournament_id :integer          not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  seed          :integer
 #
 
 class Participation < ApplicationRecord

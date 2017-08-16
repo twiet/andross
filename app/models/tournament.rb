@@ -53,6 +53,7 @@ class Tournament < ApplicationRecord
   end
 
   def generate_matches
+    #self.players = self.players.shuffle
     idx = 0
     num_players = self.players.length
     num_byes = num_byes(num_players)

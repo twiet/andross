@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170814010536) do
+ActiveRecord::Schema.define(version: 20170815235140) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 20170814010536) do
     t.integer "tournament_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "seed"
     t.index ["player_id"], name: "index_participations_on_player_id"
     t.index ["tournament_id"], name: "index_participations_on_tournament_id"
   end
@@ -49,9 +50,9 @@ ActiveRecord::Schema.define(version: 20170814010536) do
     t.datetime "registration_start"
     t.datetime "registration_end"
     t.datetime "registration_length"
-    t.boolean "is_published?", null: false
-    t.boolean "is_finished?", null: false
-    t.boolean "has_started?", null: false
+    t.boolean "is_published?"
+    t.boolean "is_finished?"
+    t.boolean "has_started?"
     t.integer "champion_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
